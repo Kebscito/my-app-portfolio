@@ -13,4 +13,5 @@
     <string name="text_capstone_my_own_app">CAPSTONE: MY OWN APP</string>
     <string name="title_activity_pop_movies">Pop Movies</string>
     <string name="title_activity_detail_movie">MovieDetail</string>
+    <string name="movies_state_key">movies_state_key</string>
 </resources>

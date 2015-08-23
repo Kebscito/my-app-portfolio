@@ -32,12 +32,22 @@ public class PopMoviesFragment extends Fragment {
 
     private MovieAdapter movieAdapter;
 
+    ArrayList<Movie> movies;
+
     public PopMoviesFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey(getString(R.string.movies_state_key))) {
+            movies = new ArrayList<>();
+            updateMovies();
+        } else {
+            movies = savedInstanceState.getParcelableArrayList(getString(R.string.movies_state_key));
+        }
+
         setHasOptionsMenu(true);
     }
 
@@ -46,7 +56,7 @@ public class PopMoviesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         movieAdapter =
-                new MovieAdapter(getActivity(), new ArrayList<Movie>());
+                new MovieAdapter(getActivity(), movies);
 
         View rootView = inflater.inflate(R.layout.fragment_pop_movies, container, false);
 
@@ -70,15 +80,9 @@ public class PopMoviesFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        updateMovies();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateMovies();
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(getString(R.string.movies_state_key), movies);
+        super.onSaveInstanceState(outState);
     }
 
     private void updateMovies() {
@@ -143,7 +147,7 @@ public class PopMoviesFragment extends Fragment {
             if (result != null) {
                 movieAdapter.clear();
                 for (Movie movie : result) {
-                    movieAdapter.add(movie);
+                    movies.add(movie);
                 }
             }
         }
